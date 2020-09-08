@@ -16,9 +16,11 @@
         height: 100%;
         font-family: 'Dosis', sans-serif;
     }
+
     p {
         margin: 0px;
     }
+
     .center {
         display: flex;
         flex-direction: column;
@@ -35,71 +37,68 @@
         overflow: auto;
         object-fit: cover;
     }
-    #startTh , #endTh{
+
+    #startTh,
+    #endTh {
         font-size: 5vw;
         opacity: 0.8;
     }
-    #seconds{
+
+    #seconds {
         font-size: 9vw;
     }
-    #milliseconds{
+
+    #milliseconds {
         font-size: 9vw;
-   }
+    }
 </style>
+
 <body>
-
     <div class="center">
-
         <p id="startTh">rendering........</p>
-        <span id="seconds">rendering.......</span>
-        <span id="milliseconds">rendering.......</span>
+        <p id="seconds">rendering.......</p>
+        <p id="milliseconds">rendering.......</p>
         <p id="endTh">rendering........</p>
-    
     </div>
 </body>
 <script>
-
-const startTh = document.querySelector('#startTh')    
-const endTh = document.querySelector('#endTh')    
-const milliseconds = document.querySelector('#milliseconds')    
-const seconds = document.querySelector('#seconds')    
-
-const zeroAppend = (val) => val < 10 ? '0' + val : val;
-const numberWithCommas = (x) => {return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");}
-const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-const gcolors = ["red", "green", "blue" , "orange" , "Indigo", "Violet" , "coral"  , "yellow" , "white"]
-
-const randomNumber = () => Math.floor(Math.random() * 7);
-
-
-const start = new Date(0);
-setInterval(colorChange , 1000);
-
-
-function upateThings() {
-
-    const end = new Date();
-    const milli = end.getTime();
-    
-    startTh.innerHTML = days[start.getDay()]+" "+months[start.getMonth()]+" "+start.getDate()+" "+start.getFullYear()+" "+zeroAppend(start.getHours())+":"+zeroAppend(start.getMinutes())+":"+zeroAppend(start.getSeconds());
-
-    endTh.innerHTML = days[end.getDay()]+" "+months[end.getMonth()]+" "+end.getDate()+" "+end.getFullYear()+" "+zeroAppend(end.getHours())+":"+zeroAppend(end.getMinutes())+":"+zeroAppend(end.getSeconds());
-    milliseconds.innerHTML = numberWithCommas(milli)
-    seconds.innerHTML = numberWithCommas((milli/1000).toFixed(0))
-
-}
-
-function colorChange() {
-    seconds.style.color = gcolors[randomNumber()];
-    milliseconds.style.color = gcolors[randomNumber()];
-}
-
-console.log(gcolors);
-
-setInterval(upateThings);
-
-
+    const startTh = document.querySelector('#startTh')
+    const endTh = document.querySelector('#endTh')
+    const milliseconds = document.querySelector('#milliseconds')
+    const seconds = document.querySelector('#seconds')
+    const zeroAppend = (val) => val < 10 ? '0' + val : val;
+    const numberWithCommas = (x) => { return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, " "); }
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const gcolors = ["red", "green", "blue", "orange", "Indigo", "Violet", "coral", "yellow", "white"]
+    const randomNumber = () => Math.floor(Math.random() * 7);
+    const start = new Date(0);
+    function upateThings() {
+        const end = new Date();
+        const milli = end.getTime();
+        startTh.innerHTML = days[start.getDay()] + " " + months[start.getMonth()] + " " + start.getDate() + " " + start.getFullYear() + " " + zeroAppend(start.getHours()) + ":" + zeroAppend(start.getMinutes()) + ":" + zeroAppend(start.getSeconds());
+        endTh.innerHTML = days[end.getDay()] + " " + months[end.getMonth()] + " " + end.getDate() + " " + end.getFullYear() + " " + zeroAppend(end.getHours()) + ":" + zeroAppend(end.getMinutes()) + ":" + zeroAppend(end.getSeconds());
+        spanCreate(milliseconds, numberWithCommas(milli), "ms")
+        spanCreate(seconds, numberWithCommas((milli / 1000).toFixed(0)), "s")
+        colorChange()
+    }
+    function spanCreate(object, text, classname) {
+        object.innerHTML = ""
+        for (let i in text) {
+            const newSpan = document.createElement('span');
+            newSpan.setAttribute('class', classname);
+            object.appendChild(newSpan);
+            newSpan.innerHTML = text[i];
+        }
+    }
+    function colorChange() {
+        const spans = document.querySelectorAll('span')
+        console.log(spans);
+        for (let i in spans) {
+            spans[i].style.color = gcolors[randomNumber()];
+        }
+    }
+    setInterval(upateThings, 1000);
 </script>
+
 </html>
